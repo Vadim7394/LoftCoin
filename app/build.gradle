@@ -4,6 +4,8 @@ ext {
     compileVersion = 26
     support_version = "26.1.0"
     butter_knife_version = "8.8.1"
+    retrofit_ver = "2.4.0"
+    okhttp_ver = "3.10.0"
 }
 
 android {
@@ -34,6 +36,14 @@ dependencies {
     implementation "com.jakewharton:butterknife:$butter_knife_version"
     implementation 'com.android.support:support-v4:26.1.0'
     annotationProcessor "com.jakewharton:butterknife-compiler:$butter_knife_version"
+
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_ver"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_ver"
+
+    // OkHttp
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_ver"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_ver"
 
 
     testImplementation 'junit:junit:4.12'
