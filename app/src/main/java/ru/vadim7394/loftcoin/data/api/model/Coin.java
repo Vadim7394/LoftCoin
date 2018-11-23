@@ -1,4 +1,4 @@
-package ru.vadim7394.loftcoin.data.model;
+package ru.vadim7394.loftcoin.data.api.model;
 
 import com.google.gson.annotations.SerializedName;
 

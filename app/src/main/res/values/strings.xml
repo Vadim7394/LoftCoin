@@ -3,6 +3,9 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="loftcoin" translatable="false">LoftCoin</string>
+
+    <string name="currency_amount">%s %s</string>
+
     <string name="welcome_title_1">Покупка и продажа</string>
     <string name="welcome_title_2">Курс криптовалют</string>
     <string name="welcome_title_3">Конвертер валют</string>
@@ -10,4 +13,26 @@
     <string name="welcome_subtitle_2">Следи за курсом валют и вовремя реагируй на изменения динамики цены.</string>
     <string name="welcome_subtitle_3">Узнай сколько эфира в 1.23 биткоина.</string>
     <string name="welcome_start_btn">Начать</string>
+
+    <string name="main_bottom_navigation_item_accounts">Кошельки</string>
+    <string name="main_bottom_navigation_item_rate">Курс</string>
+    <string name="main_bottom_navigation_item_converter">Конвертер</string>
+    <string name="wallets_menu_item_new_wallet">Новый кошелёк</string>
+    <string name="rate_screen_title">Курс криптовалют</string>
+    <string name="rate_menu_item_sort">Сортировка</string>
+    <string name="rate_menu_item_currency">Валюта</string>
+    <string name="rate_item_percent_change" translatable="false">%.2f%%</string>
+    <string name="accounts_screen_title">Кошельки</string>
+    <string name="currencies_bottom_sheet_title">Выбор валюты</string>
+    <string name="currencies_bottom_sheet_currency_name">%s | %s</string>
+    <string name="dialog_currency_title">Выбор валюты</string>
+    <string name="dialog_currency_dollar">Dollar | USD</string>
+    <string name="dialog_currency_euro">Euro | EUR</string>
+    <string name="dialog_currency_rouble">Rouble | RUB</string>
+    <string name="notification_channel_rate_changed">Изменение курса</string>
+    <string name="notification_rate_changed_body">Курс изменился %s</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

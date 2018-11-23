@@ -1,7 +1,6 @@
-package ru.vadim7394.loftcoin.screens.start;
+package ru.vadim7394.loftcoin.screens.main.rate;
 
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -10,24 +9,22 @@ import ru.vadim7394.loftcoin.data.api.Api;
 import ru.vadim7394.loftcoin.data.api.model.RateResponse;
 import ru.vadim7394.loftcoin.data.perfs.Prefs;
 
-public class StartPresenterImpl implements StartPresenter {
-
-    private static final String TAG = "StartPresenterImpl";
+public class RatePresenterImpl implements RatePresenter {
 
     private Api api;
-
     private Prefs prefs;
 
     @Nullable
-    private StartView view;
+    private RateView view;
 
-    public StartPresenterImpl(Api api, Prefs prefs) {
+
+    public RatePresenterImpl(Api api, Prefs prefs) {
         this.api = api;
         this.prefs = prefs;
     }
 
     @Override
-    public void attachView(StartView view) {
+    public void attachView(RateView view) {
         this.view = view;
     }
 
@@ -37,18 +34,27 @@ public class StartPresenterImpl implements StartPresenter {
     }
 
     @Override
-    public void loadRate() {
+    public void getRate() {
         api.ticker("array", prefs.getFiatCurrency().name()).enqueue(new Callback<RateResponse>() {
             @Override
             public void onResponse(Call<RateResponse> call, Response<RateResponse> response) {
-                if (view != null) {
-                    view.navigateToMainScreen();
+                if(view != null && response.body() != null) {
+                    view.setCoins(response.body().data);
+                    view.setRefreshing(false);
                 }
             }
+
             @Override
             public void onFailure(Call<RateResponse> call, Throwable t) {
-                Log.e(TAG, "Load rate error", t);
+                if (view != null) {
+                    view.setRefreshing(false);
+                }
             }
         });
+    }
+
+    @Override
+    public void onRefresh() {
+        getRate();
     }
 }
