@@ -2,6 +2,7 @@ package ru.vadim7394.loftcoin.data.db.room;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
 import ru.vadim7394.loftcoin.data.db.DataBase;
 import ru.vadim7394.loftcoin.data.db.modal.CoinEntity;
 
@@ -14,7 +15,7 @@ public class DatabaseImplRoom implements DataBase {
     }
 
     @Override
-    public List<CoinEntity> getCoins() {
+    public Flowable<List<CoinEntity>> getCoins() {
         return database.coinDao().getCoins();
     }
 

@@ -8,6 +8,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.vadim7394.loftcoin.BuildConfig;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 public class ApiInitializer {
 
@@ -36,7 +37,7 @@ public class ApiInitializer {
                 .baseUrl(BASE_URL)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create(gson))
-//                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
 

@@ -7,6 +7,7 @@ import android.arch.persistence.room.Query;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
 import ru.vadim7394.loftcoin.data.db.modal.CoinEntity;
 
 @Dao
@@ -16,5 +17,5 @@ public interface CoinDao {
     void SaveCoin(List<CoinEntity> coins);
 
     @Query("SELECT * FROM Coin")
-    List<CoinEntity> getCoins();
+    Flowable<List<CoinEntity>> getCoins();
 }

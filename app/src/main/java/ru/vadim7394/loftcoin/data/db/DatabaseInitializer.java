@@ -11,7 +11,6 @@ public class DatabaseInitializer {
     public DataBase init (Context context) {
         AppDatabase appDatabase = Room
                 .databaseBuilder(context, AppDatabase.class, "loftCoin.db")
-                .allowMainThreadQueries()
                 .build();
 
         return new DatabaseImplRoom(appDatabase);

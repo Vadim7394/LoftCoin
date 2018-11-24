@@ -17,7 +17,6 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".screens.launch.LaunchActivity"
-            android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
