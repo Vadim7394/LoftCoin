@@ -2,6 +2,7 @@ package ru.vadim7394.loftcoin.screens.main.rate;
 
 
 import android.app.Activity;
+import android.arch.persistence.room.Database;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -21,7 +22,10 @@ import butterknife.Unbinder;
 import ru.vadim7394.loftcoin.App;
 import ru.vadim7394.loftcoin.R;
 import ru.vadim7394.loftcoin.data.api.Api;
-import ru.vadim7394.loftcoin.data.api.model.Coin;
+
+import ru.vadim7394.loftcoin.data.db.DataBase;
+import ru.vadim7394.loftcoin.data.db.modal.CoinEntity;
+import ru.vadim7394.loftcoin.data.db.modal.CoinEntityMapper;
 import ru.vadim7394.loftcoin.data.perfs.Prefs;
 
 /**
@@ -56,7 +60,9 @@ public class RateFragment extends Fragment implements RateView {
 
         Api api = ((App) getActivity().getApplication()).getApi();
         Prefs prefs = ((App) getActivity().getApplication()).getPrefs();
-        presenter = new RatePresenterImpl(api, prefs);
+        DataBase database = ((App) getActivity().getApplication()).getDatabase();
+        CoinEntityMapper mapper = new CoinEntityMapper();
+        presenter = new RatePresenterImpl(api, prefs, database, mapper);
         adapter = new RateAdapter(prefs);
         adapter.setHasStableIds(true);
 
@@ -103,7 +109,7 @@ public class RateFragment extends Fragment implements RateView {
     }
 
     @Override
-    public void setCoins(List<Coin> coins) {
+    public void setCoins(List<CoinEntity> coins) {
         adapter.setCoins(coins);
     }
 

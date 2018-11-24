@@ -6,6 +6,7 @@ ext {
     butter_knife_version = "8.8.1"
     retrofit_ver = "2.4.0"
     okhttp_ver = "3.10.0"
+    room_ver = "1.1.1"
 }
 
 android {
@@ -17,6 +18,12 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
     buildTypes {
         release {
@@ -45,6 +52,11 @@ dependencies {
     // OkHttp
     implementation "com.squareup.okhttp3:okhttp:$okhttp_ver"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_ver"
+
+    // Room
+    implementation "android.arch.persistence.room:runtime:$room_ver"
+    annotationProcessor "android.arch.persistence.room:compiler:$room_ver"
+    implementation "android.arch.persistence.room:rxjava2:$room_ver"
 
 
     testImplementation 'junit:junit:4.12'

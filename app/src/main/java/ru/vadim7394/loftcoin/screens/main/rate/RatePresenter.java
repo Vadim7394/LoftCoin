@@ -7,5 +7,7 @@ public interface RatePresenter {
 
     void getRate();
 
+    void loadRate();
+
     void onRefresh();
 }
