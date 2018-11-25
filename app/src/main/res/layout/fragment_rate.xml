@@ -10,18 +10,37 @@
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
         android:background="@color/primary" />
+
     <FrameLayout
         android:id="@+id/rate_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/rate_refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rate_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+
         </android.support.v4.widget.SwipeRefreshLayout>
     </FrameLayout>
+
+    <FrameLayout
+        android:visibility="gone"
+        android:id="@+id/progress"
+        android:background="@color/gray_80"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </FrameLayout>
+
 </LinearLayout>

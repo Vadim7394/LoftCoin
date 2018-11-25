@@ -23,4 +23,9 @@ public class DatabaseImplRoom implements DataBase {
     public void saveCoins(List<CoinEntity> coins) {
         database.coinDao().SaveCoin(coins);
     }
+
+    @Override
+    public CoinEntity getCoin(String symbol) {
+        return database.coinDao().getCoin(symbol);
+    }
 }

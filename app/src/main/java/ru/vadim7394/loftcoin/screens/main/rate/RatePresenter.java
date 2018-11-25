@@ -1,5 +1,7 @@
 package ru.vadim7394.loftcoin.screens.main.rate;
 
+import ru.vadim7394.loftcoin.data.model.Fiat;
+
 public interface RatePresenter {
     void attachView(RateView view);
 
@@ -7,7 +9,12 @@ public interface RatePresenter {
 
     void getRate();
 
-    void loadRate();
+    void loadRate(Boolean fromRefresh);
 
     void onRefresh();
+
+    void onMenuItemCurrencyClick();
+
+    void onFiatCurrencySelected(Fiat currency);
+
 }

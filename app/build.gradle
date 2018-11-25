@@ -1,22 +1,23 @@
 apply plugin: 'com.android.application'
 
 ext {
-    compileVersion = 26
-    support_version = "26.1.0"
+    compileVersion = 27
+    support_version = "27.1.0"
     butter_knife_version = "8.8.1"
     retrofit_ver = "2.4.0"
     okhttp_ver = "3.10.0"
     room_ver = "1.1.1"
     rx_java_ver = "2.2.2"
     rx_android_ver = "2.1.0"
+    rx_binding_ver = "2.1.1"
 }
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion compileVersion
     defaultConfig {
         applicationId "ru.vadim7394.loftcoin"
         minSdkVersion 21
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -69,6 +70,7 @@ dependencies {
     // RxJava
     implementation "io.reactivex.rxjava2:rxjava:$rx_java_ver"
     implementation "io.reactivex.rxjava2:rxandroid:$rx_android_ver"
+    implementation "com.jakewharton.rxbinding2:rxbinding:$rx_binding_ver"
 
 
     testImplementation 'junit:junit:4.12'

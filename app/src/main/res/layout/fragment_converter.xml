@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".screens.main.converter.ConverterFragment">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/converter_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/primary" />
+
+    <LinearLayout
+        android:background="@drawable/bg_converter_field"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="92dp">
+
+        <EditText
+            android:id="@+id/source_amount"
+            android:gravity="start"
+            android:background="@null"
+            android:textSize="24sp"
+            android:maxLength="16"
+            android:layout_weight="1"
+            android:inputType="numberDecimal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <include
+            android:layout_weight="0"
+            android:id="@+id/source_currency"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            layout="@layout/layout_currency" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="92dp">
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/destination_amount"
+            android:gravity="start"
+            android:background="@null"
+            android:textSize="24sp"
+            android:singleLine="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <include
+            android:layout_weight="0"
+            android:id="@+id/destination_currency"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            layout="@layout/layout_currency" />
+
+    </LinearLayout>
+</LinearLayout>

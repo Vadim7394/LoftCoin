@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.vadim7394.loftcoin.R;
+import ru.vadim7394.loftcoin.screens.main.converter.ConverterFragment;
 import ru.vadim7394.loftcoin.screens.main.rate.RateFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                     showRateFragment();
                     break;
                 case R.id.menu_item_converter:
-//                    showConverterFragment();
+                    showConverterFragment();
                     break;
             }
             return true;
@@ -81,11 +82,11 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    //    private void showConverterFragment() {
-//        ConverterFragment fragment = new ConverterFragment();
-//        FragmentManager fm = getSupportFragmentManager();
-//        FragmentTransaction transaction = fm.beginTransaction();
-//        transaction.replace(R.id.fragment_container, fragment);
-//        transaction.commit();
-//    }
+    private void showConverterFragment() {
+        ConverterFragment fragment = new ConverterFragment();
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.commit();
+    }
 }

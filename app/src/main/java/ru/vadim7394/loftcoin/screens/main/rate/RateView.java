@@ -4,6 +4,7 @@ import java.util.List;
 
 import ru.vadim7394.loftcoin.data.api.model.Coin;
 import ru.vadim7394.loftcoin.data.db.modal.CoinEntity;
+import ru.vadim7394.loftcoin.data.model.Fiat;
 
 public interface RateView {
 
@@ -12,4 +13,10 @@ public interface RateView {
     void setRefreshing(boolean refreshing);
 
     void showCurrencyDialog();
+
+    void onCurrencySelected(Fiat currency);
+
+    void showProgress();
+
+    void hideProgress();
 }

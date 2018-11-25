@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -28,12 +29,13 @@ import ru.vadim7394.loftcoin.data.api.Api;
 import ru.vadim7394.loftcoin.data.db.DataBase;
 import ru.vadim7394.loftcoin.data.db.modal.CoinEntity;
 import ru.vadim7394.loftcoin.data.db.modal.CoinEntityMapper;
+import ru.vadim7394.loftcoin.data.model.Fiat;
 import ru.vadim7394.loftcoin.data.perfs.Prefs;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RateFragment extends Fragment implements RateView {
+public class RateFragment extends Fragment implements RateView, Toolbar.OnMenuItemClickListener, CurrencyDialog.CurrencyDialogListener {
 
     private static final String LAYOUT_MANAGER_STATE = "layout_manager_state";
 
@@ -48,6 +50,9 @@ public class RateFragment extends Fragment implements RateView {
 
     @BindView(R.id.rate_content)
     ViewGroup content;
+
+    @BindView(R.id.progress)
+    ViewGroup progress;
 
     private RatePresenterImpl presenter;
     private RateAdapter adapter;
@@ -90,6 +95,9 @@ public class RateFragment extends Fragment implements RateView {
 
         toolbar.setTitle(R.string.rate_screen_title);
 
+        toolbar.inflateMenu(R.menu.menu_rate);
+        toolbar.setOnMenuItemClickListener(this);
+
         recycler.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recycler.setHasFixedSize(true);
         recycler.setAdapter(adapter);
@@ -103,6 +111,12 @@ public class RateFragment extends Fragment implements RateView {
 
         if (savedInstanceState != null) {
             layoutMangerState = savedInstanceState.getParcelable(LAYOUT_MANAGER_STATE);
+        }
+
+        Fragment fragment = getFragmentManager().findFragmentByTag(CurrencyDialog.TAG);
+
+        if (fragment != null) {
+            ((CurrencyDialog) fragment).setListener(this);
         }
 
         presenter.attachView(this);
@@ -141,6 +155,32 @@ public class RateFragment extends Fragment implements RateView {
 
     @Override
     public void showCurrencyDialog() {
+        CurrencyDialog dialog = new CurrencyDialog();
+        dialog.setListener(this);
+        dialog.show(getFragmentManager(), CurrencyDialog.TAG);
+    }
 
+    @Override
+    public void onCurrencySelected(Fiat currency) {
+        presenter.onFiatCurrencySelected(currency);
+    }
+
+    @Override
+    public void showProgress() {
+        progress.setVisibility(View.VISIBLE);
+    }
+    @Override
+    public void hideProgress() {
+        progress.setVisibility(View.GONE);
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_currency:
+                presenter.onMenuItemCurrencyClick();
+                return true;
+        }
+        return false;
     }
 }

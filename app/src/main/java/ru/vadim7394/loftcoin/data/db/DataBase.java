@@ -10,4 +10,6 @@ public interface DataBase {
     Flowable<List<CoinEntity>> getCoins();
 
     void saveCoins(List<CoinEntity> coins);
+
+    CoinEntity getCoin(String symbol);
 }

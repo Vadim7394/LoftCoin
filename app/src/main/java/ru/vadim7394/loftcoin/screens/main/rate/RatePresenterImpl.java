@@ -17,6 +17,7 @@ import ru.vadim7394.loftcoin.data.api.model.RateResponse;
 import ru.vadim7394.loftcoin.data.db.DataBase;
 import ru.vadim7394.loftcoin.data.db.modal.CoinEntity;
 import ru.vadim7394.loftcoin.data.db.modal.CoinEntityMapper;
+import ru.vadim7394.loftcoin.data.model.Fiat;
 import ru.vadim7394.loftcoin.data.perfs.Prefs;
 
 public class RatePresenterImpl implements RatePresenter {
@@ -69,7 +70,13 @@ public class RatePresenterImpl implements RatePresenter {
     }
 
     @Override
-    public void loadRate() {
+    public void loadRate(Boolean fromRefresh) {
+        if (!fromRefresh) {
+            if (view != null) {
+                view.showProgress();
+            }
+        }
+
         Disposable disposable = api.ticker("array", prefs.getFiatCurrency().name())
                 .subscribeOn(Schedulers.io())
                 .map(rateResponse -> mapper.mapCoins(rateResponse.data))
@@ -81,12 +88,18 @@ public class RatePresenterImpl implements RatePresenter {
                 .subscribe(
                         object -> {
                             if (view != null) {
-                                view.setRefreshing(false);
+                                if (fromRefresh) {
+                                    view.setRefreshing(false);
+                                } else {
+                                    view.hideProgress();
+                                }
                             }
                         },
                         throwable -> {
-                            if (view != null) {
+                            if (fromRefresh) {
                                 view.setRefreshing(false);
+                            } else {
+                                view.hideProgress();
                             }
                         }
                 );
@@ -95,6 +108,17 @@ public class RatePresenterImpl implements RatePresenter {
 
     @Override
     public void onRefresh() {
-        loadRate();
+        loadRate(true);
+    }
+
+    @Override
+    public void onMenuItemCurrencyClick() {
+        view.showCurrencyDialog();
+    }
+
+    @Override
+    public void onFiatCurrencySelected(Fiat currency) {
+        prefs.setFiatCurrency(currency);
+        loadRate(false);
     }
 }
