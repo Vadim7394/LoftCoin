@@ -5,6 +5,8 @@ import java.util.List;
 import io.reactivex.Flowable;
 import ru.vadim7394.loftcoin.data.db.DataBase;
 import ru.vadim7394.loftcoin.data.db.modal.CoinEntity;
+import ru.vadim7394.loftcoin.data.db.modal.Transaction;
+import ru.vadim7394.loftcoin.data.db.modal.TransactionModel;
 import ru.vadim7394.loftcoin.data.db.modal.Wallet;
 import ru.vadim7394.loftcoin.data.db.modal.WalletModel;
 
@@ -38,5 +40,14 @@ public class DatabaseImplRoom implements DataBase {
     @Override
     public void saveWallet(Wallet wallet) {
         database.walletDao().saveWallet(wallet);
+    }
+
+    @Override
+    public void saveTransaction(List<Transaction> transactions) {
+        database.walletDao().saveTransactions(transactions);
+    }
+    @Override
+    public Flowable<List<TransactionModel>> getTransactions(String walletId) {
+        return database.walletDao().getTransactions(walletId);
     }
 }

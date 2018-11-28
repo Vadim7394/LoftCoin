@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="14dp"
+    android:paddingEnd="23dp"
+    android:paddingStart="23dp"
+    android:paddingTop="14dp">
+    <TextView
+        android:id="@+id/transaction_date"
+        android:textAllCaps="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:textColor="@color/secondary_text_color_dark"
+        android:textSize="12sp"
+        android:fontFamily="sans-serif-medium"
+        tools:text="13 окт 2018" />
+    <TextView
+        android:id="@+id/transaction_crypto_amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        android:textSize="16sp"
+        android:layout_toStartOf="@id/transaction_date"
+        android:textColor="@color/white"
+        android:lines="1"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-medium"
+        tools:text="- 2.42342342343 BTC" />
+    <ImageView
+        android:id="@+id/transaction_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/transaction_crypto_amount"
+        android:layout_alignTop="@id/transaction_crypto_amount"
+        tools:src="@drawable/ic_transaction_expense" />
+    <TextView
+        android:id="@+id/transaction_fiat_amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="6dp"
+        android:textSize="12sp"
+        android:layout_below="@id/transaction_crypto_amount"
+        android:textColor="@color/white"
+        android:fontFamily="sans-serif-medium"
+        tools:text="- 15 808,00 $" />
+</RelativeLayout>
