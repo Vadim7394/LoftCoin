@@ -15,6 +15,7 @@ import butterknife.ButterKnife;
 import ru.vadim7394.loftcoin.R;
 import ru.vadim7394.loftcoin.screens.main.converter.ConverterFragment;
 import ru.vadim7394.loftcoin.screens.main.rate.RateFragment;
+import ru.vadim7394.loftcoin.screens.main.wallets.WalletsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
             switch (menuItem.getItemId()) {
                 case R.id.menu_item_accounts:
-//                    showWalletsFragment();
+                    showWalletsFragment();
                     break;
                 case R.id.menu_item_rate:
                     showRateFragment();
@@ -66,13 +67,13 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    //    private void showWalletsFragment() {
-//        WalletsFragment fragment = new WalletsFragment();
-//        FragmentManager fm = getSupportFragmentManager();
-//        FragmentTransaction transaction = fm.beginTransaction();
-//        transaction.replace(R.id.fragment_container, fragment);
-//        transaction.commit();
-//    }
+    private void showWalletsFragment() {
+        WalletsFragment fragment = new WalletsFragment();
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.commit();
+    }
 
     private void showRateFragment() {
         RateFragment fragment = new RateFragment();
