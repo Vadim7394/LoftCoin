@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,8 @@ import ru.vadim7394.loftcoin.screens.currencies.CurrenciesBottomSheetListener;
  * A simple {@link Fragment} subclass.
  */
 public class WalletsFragment extends Fragment implements CurrenciesBottomSheetListener {
+
+    private static final String TAG = "WalletsFragment";
 
     private static final String VIEW_PAGER_POS = "view_page_pos";
 
@@ -118,6 +121,11 @@ public class WalletsFragment extends Fragment implements CurrenciesBottomSheetLi
                 walletsPager.setCurrentItem(restoredViewPagerPos);
                 restoredViewPagerPos = null;
             }
+        });
+
+        viewModel.scrollToNewWallet().observe(this, o -> {
+            Log.d(TAG, "scrollToNewWallet");
+            walletsPager.setCurrentItem(walletsPagerAdapter.getCount() - 1, true);
         });
 
         viewModel.transactions().observe(this, transactionModels -> {

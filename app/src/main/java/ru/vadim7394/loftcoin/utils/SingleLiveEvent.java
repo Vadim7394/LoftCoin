@@ -35,7 +35,7 @@ public class SingleLiveEvent<T> extends MutableLiveData<T> {
         super.setValue(value);
     }
 
-    void call() {
+    public void call() {
         setValue(null);
     }
 }

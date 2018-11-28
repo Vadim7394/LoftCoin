@@ -1,30 +1,26 @@
 package ru.vadim7394.loftcoin.screens.main.rate;
 
 import android.support.annotation.Nullable;
-
-import java.util.List;
+import android.util.Log;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import ru.vadim7394.loftcoin.data.api.model.Coin;
 import ru.vadim7394.loftcoin.data.api.Api;
-import ru.vadim7394.loftcoin.data.api.model.RateResponse;
 import ru.vadim7394.loftcoin.data.db.DataBase;
-import ru.vadim7394.loftcoin.data.db.modal.CoinEntity;
 import ru.vadim7394.loftcoin.data.db.modal.CoinEntityMapper;
 import ru.vadim7394.loftcoin.data.model.Fiat;
 import ru.vadim7394.loftcoin.data.perfs.Prefs;
 
 public class RatePresenterImpl implements RatePresenter {
 
+    private static final String TAG = "RatePresenterImpl";
+
     private Api api;
     private Prefs prefs;
-    private DataBase database;
+    private DataBase mainDatabase;
+    private DataBase workerDatabase;
     private CoinEntityMapper mapper;
 
     private CompositeDisposable disposables = new CompositeDisposable();
@@ -33,29 +29,30 @@ public class RatePresenterImpl implements RatePresenter {
     private RateView view;
 
 
-    public RatePresenterImpl(Api api, Prefs prefs, DataBase database, CoinEntityMapper mapper) {
+    public RatePresenterImpl(Api api, Prefs prefs, DataBase mainDatabase, DataBase workerDatabase, CoinEntityMapper mapper) {
         this.api = api;
         this.prefs = prefs;
-        this.database = database;
+        this.mainDatabase = mainDatabase;
+        this.workerDatabase = workerDatabase;
         this.mapper = mapper;
     }
 
     @Override
     public void attachView(RateView view) {
         this.view = view;
+        mainDatabase.open();
     }
 
     @Override
     public void detachView() {
-
+        mainDatabase.close();
         disposables.dispose();
         this.view = null;
     }
 
     @Override
     public void getRate() {
-        Disposable disposable = database.getCoins()
-                .observeOn(Schedulers.io())
+        Disposable disposable = mainDatabase.getCoins()
                 .subscribe(
                         coinEntities -> {
                             if (view != null) {
@@ -81,7 +78,9 @@ public class RatePresenterImpl implements RatePresenter {
                 .subscribeOn(Schedulers.io())
                 .map(rateResponse -> mapper.mapCoins(rateResponse.data))
                 .map(coinEntities -> {
-                    database.saveCoins(coinEntities);
+                    workerDatabase.open();
+                    workerDatabase.saveCoins(coinEntities);
+                    workerDatabase.close();
                     return new Object();
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -96,6 +95,7 @@ public class RatePresenterImpl implements RatePresenter {
                             }
                         },
                         throwable -> {
+                            Log.e(TAG, "Failed to load rate", throwable);
                             if (fromRefresh) {
                                 view.setRefreshing(false);
                             } else {

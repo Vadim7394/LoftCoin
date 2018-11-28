@@ -3,16 +3,19 @@ package ru.vadim7394.loftcoin.data.db;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 
-import ru.vadim7394.loftcoin.data.db.room.AppDatabase;
-import ru.vadim7394.loftcoin.data.db.room.DatabaseImplRoom;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 public class DatabaseInitializer {
 
-    public DataBase init (Context context) {
-        AppDatabase appDatabase = Room
-                .databaseBuilder(context, AppDatabase.class, "loftCoin.db")
+    public void init(Context context) {
+        Realm.init(context);
+        RealmConfiguration configuration = new RealmConfiguration.Builder()
+                .schemaVersion(1)
+                .name("loftcoin.realm")
                 .build();
 
-        return new DatabaseImplRoom(appDatabase);
+        Realm.setDefaultConfiguration(configuration);
+
     }
 }

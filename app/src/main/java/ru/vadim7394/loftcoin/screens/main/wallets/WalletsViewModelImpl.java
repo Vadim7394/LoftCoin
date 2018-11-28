@@ -3,7 +3,6 @@ package ru.vadim7394.loftcoin.screens.main.wallets;
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.persistence.room.Database;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
@@ -20,19 +19,18 @@ import ru.vadim7394.loftcoin.App;
 import ru.vadim7394.loftcoin.data.db.DataBase;
 import ru.vadim7394.loftcoin.data.db.modal.CoinEntity;
 import ru.vadim7394.loftcoin.data.db.modal.Transaction;
-import ru.vadim7394.loftcoin.data.db.modal.TransactionModel;
 import ru.vadim7394.loftcoin.data.db.modal.Wallet;
-import ru.vadim7394.loftcoin.data.db.modal.WalletModel;
 import ru.vadim7394.loftcoin.utils.SingleLiveEvent;
 
 public class WalletsViewModelImpl extends WalletsViewModel {
 
     private static final String TAG = "WalletsViewModelImpl";
 
-    private MutableLiveData<List<WalletModel>> walletsItems = new MutableLiveData<>();
+    private MutableLiveData<List<Wallet>> walletsItems = new MutableLiveData<>();
     private MutableLiveData<Boolean> walletsVisible = new MutableLiveData<>();
     private MutableLiveData<Boolean> newWalletVisible = new MutableLiveData<>();
-    private MutableLiveData<List<TransactionModel>> transactionsItems = new MutableLiveData<>();
+    private MutableLiveData<List<Transaction>> transactionsItems = new MutableLiveData<>();
+    private SingleLiveEvent<Object> scrollToNewWallet = new SingleLiveEvent<>();
 
     private SingleLiveEvent<Object> selectCurrency = new SingleLiveEvent<>();
 
@@ -44,6 +42,13 @@ public class WalletsViewModelImpl extends WalletsViewModel {
         super(application);
 
         database = ((App) application).getDatabase();
+        database.open();
+    }
+
+    @Override
+    protected void onCleared() {
+        database.close();
+        super.onCleared();
     }
 
     @Override
@@ -53,7 +58,7 @@ public class WalletsViewModelImpl extends WalletsViewModel {
 
     @Override
     public void onNewWalletClick() {
-        selectCurrency.postValue(new Object());
+        selectCurrency.setValue(new Object());
     }
 
     @Override
@@ -65,29 +70,28 @@ public class WalletsViewModelImpl extends WalletsViewModel {
             database.saveTransaction(transactions);
             return new Object();
         })
-                .subscribeOn(Schedulers.io())
-                .subscribe();
+                .subscribe(o -> scrollToNewWallet.call());
         disposables.add(disposable);
     }
 
     private Wallet randomWallet(CoinEntity coin) {
         Random random = new Random();
-        return new Wallet(UUID.randomUUID().toString(), coin.id, 10 * random.nextDouble());
+        return new Wallet(UUID.randomUUID().toString(), 10 * random.nextDouble(), coin);
     }
 
     @Override
     public void onWalletChanged(int position) {
-        Wallet wallet = walletsItems.getValue().get(position).wallet;
+        Wallet wallet = walletsItems.getValue().get(position);
         getTransaction(wallet.walletId);
     }
 
     @Override
-    public LiveData<List<TransactionModel>> transactions() {
+    public LiveData<List<Transaction>> transactions() {
         return transactionsItems;
     }
 
     @Override
-    public LiveData<List<WalletModel>> wallets() {
+    public LiveData<List<Wallet>> wallets() {
         return walletsItems;
     }
 
@@ -106,9 +110,13 @@ public class WalletsViewModelImpl extends WalletsViewModel {
         return selectCurrency;
     }
 
+    @Override
+    public LiveData<Object> scrollToNewWallet() {
+        return scrollToNewWallet;
+    }
+
     private void getWalletsInner() {
         Disposable disposable = database.getWallets()
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(wallets -> {
                     if (wallets.isEmpty()) {
                         walletsVisible.setValue(false);
@@ -118,8 +126,8 @@ public class WalletsViewModelImpl extends WalletsViewModel {
                         newWalletVisible.setValue(false);
 
                         if (walletsItems.getValue() == null || walletsItems.getValue().isEmpty()) {
-                            WalletModel model = wallets.get(0);
-                            String walletId = model.wallet.walletId;
+                            Wallet wallet = wallets.get(0);
+                            String walletId = wallet.walletId;
                             getTransaction(walletId);
                         }
 
@@ -131,7 +139,6 @@ public class WalletsViewModelImpl extends WalletsViewModel {
 
     private void getTransaction(String walletId) {
         Disposable disposable = database.getTransactions(walletId)
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         transactions -> transactionsItems.setValue(transactions)
                 );
@@ -153,6 +160,6 @@ public class WalletsViewModelImpl extends WalletsViewModel {
         long date = startDate + (long) (random.nextDouble() * (nowDate - startDate));
         double amount = 2 * random.nextDouble();
         boolean amountSign = random.nextBoolean();
-        return new Transaction(wallet.walletId, wallet.currencyId, amountSign ? amount : -amount, date);
+        return new Transaction(wallet.walletId, amountSign ? amount : -amount, date, wallet.coin);
     }
 }

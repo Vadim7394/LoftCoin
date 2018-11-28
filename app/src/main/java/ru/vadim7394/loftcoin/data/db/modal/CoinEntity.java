@@ -1,13 +1,10 @@
 package ru.vadim7394.loftcoin.data.db.modal;
 
-import android.arch.persistence.room.Embedded;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
-
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 import ru.vadim7394.loftcoin.data.model.Fiat;
 
-@Entity(tableName = "Coin")
-public class CoinEntity {
+public class CoinEntity extends RealmObject {
 
     @PrimaryKey
     public int id;
@@ -18,14 +15,24 @@ public class CoinEntity {
     public int rank;
     public long updated;
 
-    @Embedded(prefix = "usd_")
     public QuoteEntity usd;
 
-    @Embedded(prefix = "rub_")
     public QuoteEntity rub;
 
-    @Embedded(prefix = "eur_")
     public QuoteEntity eur;
+
+    public int getId() {
+        return id;
+    }
+    public String getName() {
+        return name;
+    }
+    public String getSymbol() {
+        return symbol;
+    }
+    public String getSlug() {
+        return slug;
+    }
 
     public QuoteEntity getQuote(Fiat fiat) {
         QuoteEntity quote = null;

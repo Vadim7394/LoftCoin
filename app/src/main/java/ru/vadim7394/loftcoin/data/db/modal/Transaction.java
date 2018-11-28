@@ -1,20 +1,24 @@
 package ru.vadim7394.loftcoin.data.db.modal;
 
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
 
-@Entity
-public class Transaction {
-    @PrimaryKey(autoGenerate = true)
-    public int transactionId;
+import io.realm.RealmObject;
+
+public class Transaction  extends RealmObject {
+
     public String walletId;
-    public int currencyId;
+
     public double amount;
     public long date;
-    public Transaction(String walletId, int currencyId, double amount, long date) {
+
+    public CoinEntity coin;
+
+    public Transaction() {
+    }
+
+    public Transaction(String walletId, double amount, long date, CoinEntity coin) {
         this.walletId = walletId;
-        this.currencyId = currencyId;
         this.amount = amount;
         this.date = date;
+        this.coin = coin;
     }
 }

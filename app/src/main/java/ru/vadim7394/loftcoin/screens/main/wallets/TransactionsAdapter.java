@@ -19,7 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.vadim7394.loftcoin.R;
 import ru.vadim7394.loftcoin.data.db.modal.QuoteEntity;
-import ru.vadim7394.loftcoin.data.db.modal.TransactionModel;
+import ru.vadim7394.loftcoin.data.db.modal.Transaction;
 import ru.vadim7394.loftcoin.data.model.Fiat;
 import ru.vadim7394.loftcoin.data.perfs.Prefs;
 import ru.vadim7394.loftcoin.utils.CurrencyFormatter;
@@ -27,12 +27,12 @@ import ru.vadim7394.loftcoin.utils.CurrencyFormatter;
 public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapter.TransactionViewHolder> {
 
     private static final String TAG = "TransactionsAdapter";
-    private List<TransactionModel> transactions = Collections.emptyList();
+    private List<Transaction> transactions = Collections.emptyList();
     private Prefs prefs;
     public TransactionsAdapter(Prefs prefs) {
         this.prefs = prefs;
     }
-    public void setTransactions(List<TransactionModel> transactions) {
+    public void setTransactions(List<Transaction> transactions) {
         this.transactions = transactions;
         notifyDataSetChanged();
     }
@@ -69,45 +69,45 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
             ButterKnife.bind(this, itemView);
             this.prefs = prefs;
         }
-        void bind(TransactionModel model) {
-            bindIcon(model);
-            bindCryptoAmount(model);
-            bindFiatAmount(model);
-            bindDate(model);
+        void bind(Transaction transaction) {
+            bindIcon(transaction);
+            bindCryptoAmount(transaction);
+            bindFiatAmount(transaction);
+            bindDate(transaction);
         }
-        private void bindIcon(TransactionModel model) {
-            if (model.transaction.amount < 0) {
+        private void bindIcon(Transaction transaction) {
+            if (transaction.amount < 0) {
                 icon.setImageResource(R.drawable.ic_transaction_expense);
             } else {
                 icon.setImageResource(R.drawable.ic_transaction_income);
             }
         }
-        private void bindCryptoAmount(TransactionModel model) {
-            if (model.transaction.amount < 0) {
-                String value = "- " + currencyFormatter.format(Math.abs(model.transaction.amount), true);
-                cryptoAmount.setText(itemView.getContext().getString(R.string.currency_amount, value, model.coin.symbol));
+        private void bindCryptoAmount(Transaction transaction) {
+            if (transaction.amount < 0) {
+                String value = "- " + currencyFormatter.format(Math.abs(transaction.amount), true);
+                cryptoAmount.setText(itemView.getContext().getString(R.string.currency_amount, value, transaction.coin.symbol));
             } else {
-                String value = "+ " + currencyFormatter.format(Math.abs(model.transaction.amount), true);
-                cryptoAmount.setText(itemView.getContext().getString(R.string.currency_amount, value, model.coin.symbol));
+                String value = "+ " + currencyFormatter.format(Math.abs(transaction.amount), true);
+                cryptoAmount.setText(itemView.getContext().getString(R.string.currency_amount, value, transaction.coin.symbol));
             }
         }
-        private void bindFiatAmount(TransactionModel model) {
+        private void bindFiatAmount(Transaction transaction) {
             Fiat fiat = prefs.getFiatCurrency();
-            QuoteEntity quote = model.coin.getQuote(fiat);
-            if (model.transaction.amount < 0) {
+            QuoteEntity quote = transaction.coin.getQuote(fiat);
+            if (transaction.amount < 0) {
                 fiatAmount.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.transaction_expense));
-                double amount = Math.abs(model.transaction.amount) * quote.price;
+                double amount = Math.abs(transaction.amount) * quote.price;
                 String value = "- " + currencyFormatter.format(amount, false);
                 fiatAmount.setText(itemView.getContext().getString(R.string.currency_amount, value, fiat.symbol));
             } else {
                 fiatAmount.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.transaction_income));
-                double amount = Math.abs(model.transaction.amount) * quote.price;
+                double amount = Math.abs(transaction.amount) * quote.price;
                 String value = "+ " + currencyFormatter.format(amount, false);
                 fiatAmount.setText(itemView.getContext().getString(R.string.currency_amount, value, fiat.symbol));
             }
         }
-        private void bindDate(TransactionModel model) {
-            Date date = new Date(model.transaction.date);
+        private void bindDate(Transaction transaction) {
+            Date date = new Date(transaction.date);
             this.date.setText(dateFormatter.format(date));
         }
     }

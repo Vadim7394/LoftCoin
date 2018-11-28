@@ -2,7 +2,6 @@ package ru.vadim7394.loftcoin.screens.main.rate;
 
 
 import android.app.Activity;
-import android.arch.persistence.room.Database;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -71,9 +70,10 @@ public class RateFragment extends Fragment implements RateView, Toolbar.OnMenuIt
 
         Api api = ((App) getActivity().getApplication()).getApi();
         Prefs prefs = ((App) getActivity().getApplication()).getPrefs();
-        DataBase database = ((App) getActivity().getApplication()).getDatabase();
+        DataBase mainDatabase = ((App) getActivity().getApplication()).getDatabase();
+        DataBase workerDatabase = ((App) getActivity().getApplication()).getDatabase();
         CoinEntityMapper mapper = new CoinEntityMapper();
-        presenter = new RatePresenterImpl(api, prefs, database, mapper);
+        presenter = new RatePresenterImpl(api, prefs, mainDatabase, workerDatabase, mapper);
         adapter = new RateAdapter(prefs);
         adapter.setHasStableIds(true);
 

@@ -6,6 +6,7 @@ import ru.vadim7394.loftcoin.data.api.Api;
 import ru.vadim7394.loftcoin.data.api.ApiInitializer;
 import ru.vadim7394.loftcoin.data.db.DataBase;
 import ru.vadim7394.loftcoin.data.db.DatabaseInitializer;
+import ru.vadim7394.loftcoin.data.db.realm.DatabaseImplRealm;
 import ru.vadim7394.loftcoin.data.perfs.Prefs;
 import ru.vadim7394.loftcoin.data.perfs.PrefsImpl;
 
@@ -26,7 +27,7 @@ public class App extends Application {
 
         api = new ApiInitializer().init();
 
-        database = new DatabaseInitializer().init(this);
+        new DatabaseInitializer().init(this);
     }
 
     public Prefs getPrefs() {
@@ -38,6 +39,6 @@ public class App extends Application {
     }
 
     public DataBase getDatabase() {
-        return database;
+        return new DatabaseImplRealm();
     }
 }

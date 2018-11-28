@@ -17,4 +17,5 @@ public interface ConverterViewModel {
     void onSourceCurrencySelected(CoinEntity coin);
     void onDestinationCurrencySelected(CoinEntity coin);
     void saveState(Bundle outState);
+    void onDetach();
 }
